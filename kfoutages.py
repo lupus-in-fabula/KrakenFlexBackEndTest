@@ -34,7 +34,8 @@ class OutagesAPI:
      
         try:
             res_status = 500
-            while res_status == 500:
+            tries = 0
+            while res_status == 500 and tries<100:
                 if method == "get":
                     headers = {"x-api-key" : self.apikey}
                     response = requests.get(apiurl, headers=headers)
@@ -44,6 +45,7 @@ class OutagesAPI:
                 else:
                     return (-1, "Unknown Method")
                 res_status = response.status_code
+                tries += 1
         except:
             return (-1, "Exception connecting to service " + apiurl)
         if res_status != 200:
